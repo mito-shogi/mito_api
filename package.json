@@ -1,0 +1,53 @@
+{
+  "name": "mito_shogi_api",
+  "version": "0.0.1",
+  "description": "The API for Mito Shogi.",
+  "author": "ultemica",
+  "private": true,
+  "license": "MIT",
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "scripts": {
+    "dev": "wrangler dev src/index.ts --test-scheduled",
+    "start": "bun dist/index.js",
+    "prebuild": "rimraf dist",
+    "build": "bun build src/index.ts --minify --outdir dist --outfile=index.js",
+    "prepare": "husky",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@hono-rate-limiter/cloudflare": "^0.2.2",
+    "css-select": "^5.1.0",
+    "dayjs": "^1.11.13",
+    "hono": "^4.7.5",
+    "hono-rate-limiter": "^0.4.2",
+    "htmlparser2": "^10.0.0",
+    "lint-staged": "^15.5.0",
+    "rimraf": "^6.0.1",
+    "tsshogi": "^1.8.0",
+    "uuidv7": "^1.0.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@cloudflare/workers-types": "^4.20250327.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@commitlint/cz-commitlint": "^19.8.0",
+    "@hono/zod-openapi": "^0.19.2",
+    "@scalar/hono-api-reference": "^0.7.4",
+    "@types/bun": "^1.2.8",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.13.14",
+    "commitizen": "^4.3.1",
+    "husky": "^9.1.7",
+    "wrangler": "4.6.0"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.8.2"
+  }
+}

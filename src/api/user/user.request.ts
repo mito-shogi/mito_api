@@ -19,3 +19,15 @@ export class UserSearchQuery implements RequestType {
     }
   }
 }
+
+export class UserInfoQuery implements RequestType {
+  method = HTTPMethod.GET
+  path: string
+  headers?: HTTPHeaders | undefined
+  parameters?: Record<string, string | number | boolean> | undefined
+  encoding?: HTTPEncoding | undefined = undefined
+
+  constructor(user_id: string) {
+    this.path = `users/mypage/${user_id}`
+  }
+}

@@ -205,7 +205,6 @@ export const PreGameListSchema = (input: any): any => {
       const avatar = selectOne('.left_player_avatar', content).attribs.src.match(/\/avatar\/(.+?)-l.png/)[1]
       const name = selectOne('.player_name_text_left', content).children[0].data.trim()
       const rank = selectOne('.player_dan_text_left', content).children[0].data.trim()
-      console.log(avatar)
       return {
         name: name,
         rank: Number.parseInt(rank.match(/(\d+) (Dan|Kyu)/)[1], 10) * (rank.includes('Dan') ? 1 : -1),

@@ -6,6 +6,5 @@ import { GameQuery } from './game.request'
 import { GameSchema } from './game.schema.dto'
 
 export const getGame = async (c: Context, game_id: string): Promise<GameSchema> => {
-  const game = await request(c, new GameQuery(c, game_id), z.preprocess(PreGameSchema, GameSchema))
-  return game
+  return await request(c, new GameQuery(c, game_id), z.preprocess(PreGameSchema, GameSchema))
 }

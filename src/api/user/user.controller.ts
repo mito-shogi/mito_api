@@ -1,11 +1,11 @@
-import { createRoute, z } from '@hono/zod-openapi'
+import { createRoute } from '@hono/zod-openapi'
 import { UserParams, UserSchema, UserSearchQuery } from './user.schema.dto'
 
 import type { Bindings } from '@/utils/bindings'
 import { OpenAPIHono as Hono } from '@hono/zod-openapi'
 import { Paginated } from '../common/paginated.dto'
 import { GameInfoSchema } from '../game/game.schema.dto'
-import { findUsers, getUser } from './user.service'
+import { findUsers, getUser, getUserGames } from './user.service'
 const user = new Hono<{ Bindings: Bindings }>()
 
 user.openapi(
@@ -56,7 +56,7 @@ user.openapi(
   }),
   async (c) => {
     const { user_id } = c.req.valid<'param'>('param')
-    return c.json(await getUser(user_id))
+    return c.json(await getUser(c, user_id))
   }
 )
 
@@ -73,7 +73,7 @@ user.openapi(
       200: {
         content: {
           'application/json': {
-            schema: z.array(GameInfoSchema)
+            schema: Paginated(GameInfoSchema)
           }
         },
         description: 'List all games of a user'
@@ -82,7 +82,7 @@ user.openapi(
   }),
   async (c) => {
     const { user_id } = c.req.valid<'param'>('param')
-    return c.json(await getUser(user_id))
+    return c.json(await getUserGames(c, user_id))
   }
 )
 

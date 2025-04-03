@@ -15,7 +15,8 @@ export const findUsers = async (c: Context, q: string): Promise<Paginated<typeof
 }
 
 // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-export const getUser = async (q: string): Promise<UserSchema> => {
+export const getUser = async (c: Context, user_id: string): Promise<UserSchema> => {
+  // const user = await request(c, new UserInfoQuery(user_id), z.preprocess(PreUserSchema, z.array(UserSchema)))
   return {
     name: 'mito_shogi',
     rank: 0,

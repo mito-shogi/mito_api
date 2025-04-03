@@ -40,9 +40,12 @@ export const PreGameSchema = (input: any): any => {
   if (input === null || input === undefined) {
     return input
   }
+  if (input.status === false) {
+    throw new HTTPException(404, { message: 'Not Found' })
+  }
   const play_time_match: RegExpMatchArray | null = input.game_id.match(/(\d{8}_\d{6})/)
   if (play_time_match === null) {
-    throw new HTTPException(400, { message: 'play time parse error' })
+    throw new HTTPException(400, { message: 'PlayTime Parse Error' })
   }
   const play_time: string = dayjs(play_time_match[1], 'YYYYMMDD_HHmmss').tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss')
   const game_type: string = (() => {
@@ -58,7 +61,7 @@ export const PreGameSchema = (input: any): any => {
       case 4:
         return 'learning'
       default:
-        throw new HTTPException(400, { message: 'Invalid game type' })
+        throw new HTTPException(400, { message: 'Invalid Game Type' })
     }
   })()
   const game_mode: string = (() => {
@@ -76,7 +79,7 @@ export const PreGameSchema = (input: any): any => {
       case 's1':
         return '0+10+0'
       default:
-        throw new HTTPException(400, { message: 'Invalid game rule' })
+        throw new HTTPException(400, { message: 'Invalid Game Rule' })
     }
   })()
   const init_time: number = (() => {
@@ -88,7 +91,7 @@ export const PreGameSchema = (input: any): any => {
       case 's1':
         return 0
       default:
-        throw new HTTPException(400, { message: 'Invalid game rule' })
+        throw new HTTPException(400, { message: 'Invalid Game Type' })
     }
   })()
   let black_time: number = init_time
@@ -132,7 +135,7 @@ export const PreGameSchema = (input: any): any => {
   for (const move of moves) {
     const _move: Move | Error = parseCSAMove(record.position, move.csa)
     if (_move instanceof Error) {
-      throw new HTTPException(400, { message: 'move parse error' })
+      throw new HTTPException(400, { message: 'Invalid Move' })
     }
     record.append(_move)
     record.current.setElapsedMs(move.time * 1000)

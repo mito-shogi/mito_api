@@ -3,6 +3,7 @@ import { request } from '@/utils/request_type'
 import type { Context } from 'hono'
 import { z } from 'zod'
 import type { Paginated } from '../common/paginated.dto'
+import type { GameInfoSchema } from '../game/game.schema.dto'
 import { UserSearchQuery } from './user.request'
 import { UserSchema } from './user.schema.dto'
 
@@ -21,5 +22,14 @@ export const getUser = async (c: Context, user_id: string): Promise<UserSchema> 
     name: 'mito_shogi',
     rank: 0,
     avatar: '_'
+  }
+}
+
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
+export const getUserGames = async (c: Context, user_id: string): Promise<Paginated<typeof GameInfoSchema>> => {
+  // const user = await request(c, new UserInfoQuery(user_id), z.preprocess(PreUserSchema, z.array(UserSchema)))
+  return {
+    count: 0,
+    results: []
   }
 }

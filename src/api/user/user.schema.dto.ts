@@ -36,5 +36,5 @@ export const UserSchema = z
   .openapi('UserSchema', {})
 
 export type UserSchema = z.infer<typeof UserSchema>
-export type UserSeachQuery = z.infer<typeof UserSeachQuery>
+export type UserSearchQuery = z.infer<typeof UserSearchQuery>
 export type UserParams = z.infer<typeof UserParams>

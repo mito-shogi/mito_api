@@ -14,6 +14,10 @@ export const GameInfoSchema = z
       description: 'ゲームID',
       example: 'mito_shogi-mito_shogi-20250101_000000'
     }),
+    play_time: z.string().openapi({
+      description: '対局開始時間(JST)',
+      example: '2025-01-01T00:00:00+09:000'
+    }),
     game_rule: z.enum(['600+0+0', '180+0+0', '0+10+0']).openapi({
       description: 'ゲーム種別',
       example: '180+0+0'
@@ -26,22 +30,9 @@ export const GameInfoSchema = z
       description: '対局モード',
       example: 'normal'
     }),
-    user_info: z.array(UserSchema).openapi({
-      description: '対局者情報',
-      example: [
-        {
-          name: 'mito_shogi',
-          rank: 0,
-          avatar: '_'
-        },
-        {
-          name: 'mito_shogi',
-          rank: 0,
-          avatar: '_'
-        }
-      ]
-    }),
-    result: z.enum(['WIN', 'LOSE']).openapi({
+    black: UserSchema,
+    white: UserSchema,
+    result: z.enum(['WIN', 'LOSE', 'DRAW']).optional().openapi({
       description: '対局結果',
       example: 'WIN'
     }),
@@ -65,10 +56,19 @@ export const GameSchema = GameInfoSchema.extend({
   //   description: '駒落ち',
   //   example: 0
   // }),
-  result: z.enum(['SENTE_WIN_TIMEOUT', 'SENTE_WIN_CHECKMATE', 'GOTE_WIN_TIMEOUT', 'GOTE_WIN_CHECKMATE']).openapi({
-    description: '対局結果',
-    example: 'SENTE_WIN_TIMEOUT'
-  })
+  result: z
+    .enum([
+      'SENTE_WIN_TIMEOUT',
+      'SENTE_WIN_CHECKMATE',
+      'SENTE_WIN_TORYO',
+      'GOTE_WIN_TIMEOUT',
+      'GOTE_WIN_CHECKMATE',
+      'GOTE_WIN_TORYO'
+    ])
+    .openapi({
+      description: '対局結果',
+      example: 'SENTE_WIN_TIMEOUT'
+    })
 }).openapi('GameSchema', {})
 
 export type GameSearchParam = z.infer<typeof GameSearchParam>

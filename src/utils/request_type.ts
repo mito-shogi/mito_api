@@ -56,6 +56,9 @@ export const request = async <T, U>(
   })
 
   if (!response.ok) {
+    if (url.pathname === '/games/history') {
+      throw new HTTPException(404, { message: 'Not Fouhd' })
+    }
     throw new HTTPException(response.status as ContentfulStatusCode, { message: response.statusText })
   }
 

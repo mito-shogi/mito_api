@@ -54,7 +54,8 @@ export const GameInfoSchema = z
 
 export const GameSchema = GameInfoSchema.extend({
   kif: z.any().openapi({
-    description: 'JKF形式の棋譜'
+    description: 'JKF形式の棋譜',
+    example: {}
   }),
   position: z.string().openapi({
     description: '初期配置',

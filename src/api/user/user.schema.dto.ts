@@ -1,6 +1,6 @@
 import { z } from '@hono/zod-openapi'
 
-export const UserSeachQuery = z
+export const UserSearchQuery = z
   .object({
     q: z.string().openapi({
       description: 'ユーザ名',
@@ -33,9 +33,7 @@ export const UserSchema = z
       example: '_'
     })
   })
-  .openapi('UserSchema', {
-    description: 'ユーザ情報'
-  })
+  .openapi('UserSchema', {})
 
 export type UserSchema = z.infer<typeof UserSchema>
 export type UserSeachQuery = z.infer<typeof UserSeachQuery>

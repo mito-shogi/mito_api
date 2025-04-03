@@ -1,9 +1,10 @@
-import { createRoute } from '@hono/zod-openapi'
-import { UserParams, UserSchema, UserSeachQuery } from './user.schema.dto'
+import { createRoute, z } from '@hono/zod-openapi'
+import { UserParams, UserSchema, UserSearchQuery } from './user.schema.dto'
 
 import type { Bindings } from '@/utils/bindings'
 import { OpenAPIHono as Hono } from '@hono/zod-openapi'
 import { Paginated } from '../common/paginated.dto'
+import { GameInfoSchema } from '../game/game.schema.dto'
 import { findUsers, getUser } from './user.service'
 const user = new Hono<{ Bindings: Bindings }>()
 
@@ -14,7 +15,7 @@ user.openapi(
     tags: ['Users'],
     summary: 'Search users',
     request: {
-      query: UserSeachQuery
+      query: UserSearchQuery
     },
     responses: {
       200: {
@@ -29,7 +30,7 @@ user.openapi(
   }),
   async (c) => {
     const { q } = c.req.valid<'query'>('query')
-    return c.json(await findUsers(q))
+    return c.json(await findUsers(c, q))
   }
 )
 
@@ -50,6 +51,32 @@ user.openapi(
           }
         },
         description: 'Retrieve the user'
+      }
+    }
+  }),
+  async (c) => {
+    const { user_id } = c.req.valid<'param'>('param')
+    return c.json(await getUser(user_id))
+  }
+)
+
+user.openapi(
+  createRoute({
+    method: 'get',
+    path: ':user_id/games',
+    tags: ['Games'],
+    summary: 'List all games of a user',
+    request: {
+      params: UserParams
+    },
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: z.array(GameInfoSchema)
+          }
+        },
+        description: 'List all games of a user'
       }
     }
   }),

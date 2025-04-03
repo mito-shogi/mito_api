@@ -8,15 +8,19 @@ export const GameSearchParam = z.object({
   })
 })
 
-export const GameSchema = z
+export const GameInfoSchema = z
   .object({
     game_id: z.string().openapi({
       description: 'Game ID',
       example: 'mito_shogi-mito_shogi-20250101_000000'
     }),
-    game_type: z.enum(['sb', 's1', '']).openapi({
+    game_rule: z.enum(['sb', 's1', '']).openapi({
       description: 'ゲーム種別',
       example: 'sb'
+    }),
+    game_type: z.enum(['rank']).openapi({
+      description: 'ルール',
+      example: 'rank'
     }),
     game_mode: z.enum(['normal', 'sprint']).openapi({
       description: '対局モード',
@@ -37,19 +41,31 @@ export const GameSchema = z
         }
       ]
     }),
-    position: z.string().openapi({
-      description: '初期配置',
-      example: 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1'
+    result: z.enum(['WIN', 'LOSE']).openapi({
+      description: '対局結果',
+      example: 'WIN'
     }),
-    result: z.enum(['GOTE_WIN_TIMEOUT', 'SENTE_WIN_TIMEOUT', 'GOTE_WIN_TORYO', 'SENTE_WIN_TORYO']),
-    handicap: z.number().min(0).max(9).openapi({
-      description: '駒落ち',
-      example: 0
+    tags: z.array(z.number().int()).openapi({
+      description: 'タグ',
+      example: [100, 200]
     })
   })
-  .openapi('GameSchema', {
-    description: '対局情報'
+  .openapi('GameInfoSchema', {})
+
+export const GameSchema = GameInfoSchema.extend({
+  kif: z.string().openapi({
+    description: '棋譜(CSA形式)'
+  }),
+  position: z.string().openapi({
+    description: '初期配置',
+    example: 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1'
+  }),
+  handicap: z.number().min(0).max(9).openapi({
+    description: '駒落ち',
+    example: 0
   })
+}).openapi('GameSchema', {})
 
 export type GameSearchParam = z.infer<typeof GameSearchParam>
 export type GameSchema = z.infer<typeof GameSchema>
+export type GameInfoSchema = z.infer<typeof GameInfoSchema>

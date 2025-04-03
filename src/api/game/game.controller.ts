@@ -12,6 +12,7 @@ game.openapi(
     path: ':game_id',
     tags: ['Games'],
     summary: 'Retrieve a game',
+    description: 'Get game by game id',
     request: {
       params: GameSearchParam
     },

@@ -14,6 +14,7 @@ user.openapi(
     path: '/',
     tags: ['Users'],
     summary: 'Search users',
+    description: 'Search users by user id',
     request: {
       query: UserSearchQuery
     },
@@ -40,6 +41,7 @@ user.openapi(
     path: ':user_id',
     tags: ['Users'],
     summary: 'Retrieve a user',
+    description: 'Get user data by user id',
     request: {
       params: UserParams
     },
@@ -66,6 +68,7 @@ user.openapi(
     path: ':user_id/games',
     tags: ['Games'],
     summary: 'List all games of a user',
+    description: 'Get games list by user id',
     request: {
       params: UserParams
     },

@@ -31,7 +31,6 @@ export const getUserGames = async (c: Context, user_id: string): Promise<Paginat
     new GameListQuery(user_id, 'normal', 'rank', 'sb'),
     z.preprocess(PreGameListSchema, z.array(GameInfoSchema))
   )
-  console.log(games)
   return {
     count: games.length,
     results: games

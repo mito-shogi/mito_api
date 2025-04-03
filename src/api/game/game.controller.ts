@@ -28,7 +28,7 @@ game.openapi(
   }),
   async (c) => {
     const { game_id } = c.req.valid<'param'>('param')
-    return c.json(await getGame(game_id))
+    return c.json(await getGame(c, game_id))
   }
 )
 

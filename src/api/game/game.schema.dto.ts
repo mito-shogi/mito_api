@@ -3,7 +3,7 @@ import { UserSchema } from '../user/user.schema.dto'
 
 export const GameSearchParam = z.object({
   game_id: z.string().openapi({
-    description: 'Game ID',
+    description: 'ゲームID',
     example: 'mito_shogi-mito_shogi-20250101_000000'
   })
 })
@@ -11,12 +11,12 @@ export const GameSearchParam = z.object({
 export const GameInfoSchema = z
   .object({
     game_id: z.string().openapi({
-      description: 'Game ID',
+      description: 'ゲームID',
       example: 'mito_shogi-mito_shogi-20250101_000000'
     }),
-    game_rule: z.enum(['sb', 's1', '']).openapi({
+    game_rule: z.enum(['600+0+0', '180+0+0', '0+10+0']).openapi({
       description: 'ゲーム種別',
-      example: 'sb'
+      example: '180+0+0'
     }),
     game_type: z.enum(['rank']).openapi({
       description: 'ルール',
@@ -53,8 +53,8 @@ export const GameInfoSchema = z
   .openapi('GameInfoSchema', {})
 
 export const GameSchema = GameInfoSchema.extend({
-  kif: z.string().openapi({
-    description: '棋譜(CSA形式)'
+  kif: z.object({}).passthrough().openapi({
+    description: '棋譜(JKF形式)'
   }),
   position: z.string().openapi({
     description: '初期配置',
@@ -63,7 +63,8 @@ export const GameSchema = GameInfoSchema.extend({
   handicap: z.number().min(0).max(9).openapi({
     description: '駒落ち',
     example: 0
-  })
+  }),
+  result: z.enum(['SENTE_WIN_TIMEOUT', 'SENTE_WIN_CHECKMATE', 'GOTE_WIN_TIMEOUT', 'GOTE_WIN_CHECKMATE']).openapi({})
 }).openapi('GameSchema', {})
 
 export type GameSearchParam = z.infer<typeof GameSearchParam>

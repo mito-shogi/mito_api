@@ -12,9 +12,9 @@ user.openapi(
   createRoute({
     method: 'get',
     path: '/',
-    tags: ['Users'],
-    summary: 'Search users',
-    description: 'Search users by user id',
+    tags: ['ユーザー'],
+    summary: '検索',
+    description: 'キーワードからユーザーを検索します',
     request: {
       query: UserSearchQuery
     },
@@ -25,7 +25,7 @@ user.openapi(
             schema: Paginated(UserSchema)
           }
         },
-        description: 'Find users'
+        description: 'ユーザー一覧'
       }
     }
   }),
@@ -39,9 +39,9 @@ user.openapi(
   createRoute({
     method: 'get',
     path: ':user_id',
-    tags: ['Users'],
-    summary: 'Retrieve a user',
-    description: 'Get user data by user id',
+    tags: ['ユーザー'],
+    summary: '取得',
+    description: 'ユーザーIDを指定してユーザー情報を取得します',
     request: {
       params: UserParams
     },
@@ -52,7 +52,11 @@ user.openapi(
             schema: UserSchema
           }
         },
-        description: 'Retrieve the user'
+        description: 'ユーザー詳細'
+      },
+      404: {
+        content: {},
+        description: 'エラー'
       }
     }
   }),
@@ -66,9 +70,9 @@ user.openapi(
   createRoute({
     method: 'get',
     path: ':user_id/games',
-    tags: ['Games'],
-    summary: 'List all games of a user',
-    description: 'Get games list by user id',
+    tags: ['棋譜'],
+    summary: '一覧',
+    description: 'ユーザーIDから棋譜一覧を取得します',
     request: {
       params: UserParams
     },
@@ -79,7 +83,11 @@ user.openapi(
             schema: Paginated(GameInfoSchema)
           }
         },
-        description: 'List all games of a user'
+        description: '棋譜一覧'
+      },
+      404: {
+        content: {},
+        description: 'エラー'
       }
     }
   }),

@@ -10,9 +10,9 @@ game.openapi(
   createRoute({
     method: 'get',
     path: ':game_id',
-    tags: ['Games'],
-    summary: 'Retrieve a game',
-    description: 'Get game by game id',
+    tags: ['棋譜'],
+    summary: '取得',
+    description: '棋譜IDから棋譜を取得します',
     request: {
       params: GameSearchParam
     },
@@ -23,7 +23,11 @@ game.openapi(
             schema: GameSchema
           }
         },
-        description: 'Retrieve the game'
+        description: '棋譜詳細'
+      },
+      404: {
+        content: {},
+        description: 'エラー'
       }
     }
   }),

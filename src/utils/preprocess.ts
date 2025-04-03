@@ -202,21 +202,24 @@ export const PreGameListSchema = (input: any): any => {
       }
     })()
     const black = (() => {
+      const avatar = selectOne('.left_player_avatar', content).attribs.src.match(/\/avatar\/(.+?)-l.png/)[1]
       const name = selectOne('.player_name_text_left', content).children[0].data.trim()
       const rank = selectOne('.player_dan_text_left', content).children[0].data.trim()
+      console.log(avatar)
       return {
         name: name,
         rank: Number.parseInt(rank.match(/(\d+) (Dan|Kyu)/)[1], 10) * (rank.includes('Dan') ? 1 : -1),
-        avatar: '_'
+        avatar: avatar
       }
     })()
     const white = (() => {
+      const avatar = selectOne('.right_player_avatar', content).attribs.src.match(/\/avatar\/(.+?)-r.png/)[1]
       const name = selectOne('.player_name_text_right', content).children[0].data.trim()
       const rank = selectOne('.player_dan_text_right', content).children[0].data.trim()
       return {
         name: name,
         rank: Number.parseInt(rank.match(/(\d+) (Dan|Kyu)/)[1], 10) * (rank.includes('Dan') ? 1 : -1),
-        avatar: '_'
+        avatar: avatar
       }
     })()
     const tags = selectAll('div.game_footer .game_badges span a', content)

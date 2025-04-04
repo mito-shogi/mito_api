@@ -15,6 +15,7 @@ import { HTTPException } from 'hono/http-exception'
 import { logger } from 'hono/logger'
 import { timeout } from 'hono/timeout'
 import { ZodError } from 'zod'
+import game from './api/game/game.controller'
 import user from './api/user/user.controller'
 import { scheduled } from './handler/scheduled'
 import type { Bindings } from './utils/bindings'
@@ -77,6 +78,7 @@ app.onError(async (error, c) => {
   return c.json({ message: error.message }, 500)
 })
 app.route('/users', user)
+app.route('/games', game)
 
 export default {
   fetch: app.fetch,

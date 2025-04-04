@@ -1,4 +1,4 @@
-name = "mito_shogi_api"
+name = "mito-shogi-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-11"
 send_metrics = true

@@ -35,11 +35,11 @@ CREATE TABLE "games" (
 -- CreateTable
 CREATE TABLE "game_tags" (
     "game_id" TEXT NOT NULL,
-    "tagId" INTEGER NOT NULL,
+    "tag_id" INTEGER NOT NULL,
 
-    PRIMARY KEY ("game_id", "tagId"),
+    PRIMARY KEY ("game_id", "tag_id"),
     CONSTRAINT "game_tags_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "games" ("game_id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "game_tags_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "tags" ("tag_id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "game_tags_tag_id_fkey" FOREIGN KEY ("tag_id") REFERENCES "tags" ("tag_id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable

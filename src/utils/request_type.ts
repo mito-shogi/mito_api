@@ -1,10 +1,8 @@
 import { HTTPEncoding } from '@/constant/encoding'
 import { HTTPMethod } from '@/constant/method'
-import type { Context } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import type { ZodSchema } from 'zod'
-import type { Bindings } from './bindings'
 
 export type HTTPHeaders = Record<string, string>
 export type HTTPParameters = Record<string, string | number | boolean>
@@ -18,7 +16,7 @@ export interface RequestType {
 }
 
 export const request = async <T, U>(
-  c: Context<{ Bindings: Bindings }>,
+  session: string,
   request: RequestType,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   S: ZodSchema<T, any, U>
@@ -39,7 +37,7 @@ export const request = async <T, U>(
   if (request.encoding === HTTPEncoding.FORM) {
     request.headers = { 'Content-Type': 'application/x-www-form-urlencoded', Accept: '*/*' }
   }
-  request.headers = { ...request.headers, Cookie: `_web_session=${c.env.WARS_WEB_SESSION}` }
+  request.headers = { ...request.headers, Cookie: `_web_session=${session}` }
 
   const response = await fetch(url.href, {
     method: request.method,

@@ -1,8 +1,10 @@
 import type { GameSchema } from '@/api/game/game.schema.dto'
-import type { UserSchema } from '@/api/user/user.schema.dto'
+import { UserSchema } from '@/api/user/user.schema.dto'
 import { PrismaD1 } from '@prisma/adapter-d1'
 import { PrismaClient } from '@prisma/client'
+import { z } from 'zod'
 import type { Bindings } from './bindings'
+import { snakeCaseKeys } from './snakecase_keys'
 
 class Prisma {
   private prisma: PrismaClient
@@ -21,14 +23,32 @@ class Prisma {
   }
 
   find_users = async (user_id: string): Promise<UserSchema[]> => {
-    // @ts-ignore
-    return await this.prisma.user.findMany({
-      where: {
-        userId: {
-          in: [user_id]
-        }
-      }
-    })
+    return z.array(UserSchema).parse(
+      snakeCaseKeys(
+        await this.prisma.user.findMany({
+          where: {
+            userId: {
+              in: [user_id]
+            }
+          }
+        })
+      )
+    )
+  }
+
+  get_users = async (options: {
+    take: number
+  }): Promise<UserSchema[]> => {
+    return z.array(UserSchema).parse(
+      snakeCaseKeys(
+        await this.prisma.user.findMany({
+          orderBy: {
+            updatedAt: 'desc'
+          },
+          take: options.take
+        })
+      )
+    )
   }
 
   create_users = async (users: UserSchema[]): Promise<void> => {
@@ -64,7 +84,17 @@ class Prisma {
       update: {
         kif: game.kif,
         position: game.position,
-        playTime: game.play_time
+        playTime: game.play_time,
+        black: {
+          update: {
+            userId: game.black.user_id
+          }
+        },
+        white: {
+          update: {
+            userId: game.white.user_id
+          }
+        }
       },
       create: {
         gameId: game.game_id,
@@ -89,12 +119,12 @@ class Prisma {
         white: {
           connectOrCreate: {
             where: {
-              userId: game.black.user_id
+              userId: game.white.user_id
             },
             create: {
-              userId: game.black.user_id,
-              rank: game.black.rank,
-              avatar: game.black.avatar
+              userId: game.white.user_id,
+              rank: game.white.rank,
+              avatar: game.white.avatar
             }
           }
         },

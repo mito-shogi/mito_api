@@ -42,6 +42,12 @@ d1_databases = [
 bunx wrangler d1 migrations create mito-shogi create_user_table
 ```
 
+#### Migrate
+
+```zsh
+bunx prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_user_table.sql
+```
+
 #### Bindings
 
 ```ts

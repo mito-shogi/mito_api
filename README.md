@@ -36,6 +36,12 @@ d1_databases = [
 ]
 ```
 
+#### Prisma Schema
+
+```zsh
+bunx wrangler d1 migrations create mito-shogi create_user_table
+```
+
 #### Bindings
 
 ```ts

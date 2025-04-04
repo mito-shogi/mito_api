@@ -34,6 +34,7 @@
         "GitHub.copilot",
         "GitHub.copilot-chat",
         "PKief.material-icon-theme",
+        "Prisma.prisma",
         "antfu.file-nesting",
         "bierner.github-markdown-preview",
         "bierner.markdown-mermaid",
@@ -62,7 +63,7 @@
         "files.watcherExclude": {
           "**/node_modules/**": true
         },
-        "scm.defaultViewMode": "tree",
+        "scm.defaultViewMode": "tree"
       }
     }
   }

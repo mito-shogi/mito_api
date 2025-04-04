@@ -8,7 +8,7 @@ export const GameSearchParam = z.object({
   })
 })
 
-export const GameInfoSchema = z
+export const GameSchema = z
   .object({
     game_id: z.string().openapi({
       description: 'ゲームID',
@@ -39,38 +39,21 @@ export const GameInfoSchema = z
     tags: z.array(z.number().int()).openapi({
       description: 'タグ',
       example: [100, 200]
+    }),
+    kif: z.any().optional().openapi({
+      description: 'JKF形式の棋譜',
+      example: {}
+    }),
+    position: z.string().optional().openapi({
+      description: '初期配置',
+      example: 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1'
+    }),
+    reason: z.enum(['TIMEOUT', 'CHECKMATE', 'TORYO']).optional().openapi({
+      description: '対局終了理由',
+      example: 'TIMEOUT'
     })
   })
-  .openapi('GameInfoSchema', {})
-
-export const GameSchema = GameInfoSchema.extend({
-  kif: z.any().openapi({
-    description: 'JKF形式の棋譜',
-    example: {}
-  }),
-  position: z.string().openapi({
-    description: '初期配置',
-    example: 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1'
-  }),
-  // handicap: z.number().min(0).max(9).openapi({
-  //   description: '駒落ち',
-  //   example: 0
-  // }),
-  result: z
-    .enum([
-      'SENTE_WIN_TIMEOUT',
-      'SENTE_WIN_CHECKMATE',
-      'SENTE_WIN_TORYO',
-      'GOTE_WIN_TIMEOUT',
-      'GOTE_WIN_CHECKMATE',
-      'GOTE_WIN_TORYO'
-    ])
-    .openapi({
-      description: '対局結果',
-      example: 'SENTE_WIN_TIMEOUT'
-    })
-}).openapi('GameSchema', {})
+  .openapi('GameSchema', {})
 
 export type GameSearchParam = z.infer<typeof GameSearchParam>
 export type GameSchema = z.infer<typeof GameSchema>
-export type GameInfoSchema = z.infer<typeof GameInfoSchema>

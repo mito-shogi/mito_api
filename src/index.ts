@@ -16,10 +16,12 @@ import { logger } from 'hono/logger'
 import { timeout } from 'hono/timeout'
 import { ZodError } from 'zod'
 import game from './api/game/game.controller'
+import status from './api/status/status.controller'
 import user from './api/user/user.controller'
 import { scheduled } from './handler/scheduled'
 import type { Bindings } from './utils/bindings'
 import { reference, specification } from './utils/docs'
+import Prisma from './utils/prisma'
 
 const app = new Hono<{ Bindings: Bindings }>()
 
@@ -51,6 +53,13 @@ app.use('*', (c, next) => {
   }
   return next()
 })
+app.use('*', async (c: Context, next: Next) => {
+  c.env = { ...process.env, ...c.env }
+  if (!c.env.prisma) {
+    c.env.prisma = new Prisma(c.env)
+  }
+  await next()
+})
 if (!process.env.DEV) {
   app.doc31('openapi.json', specification)
   app.get('/docs', apiReference(reference))
@@ -79,6 +88,7 @@ app.onError(async (error, c) => {
 })
 app.route('/users', user)
 app.route('/games', game)
+app.route('/status', status)
 
 export default {
   fetch: app.fetch,

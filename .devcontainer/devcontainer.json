@@ -19,6 +19,7 @@
     "ghcr.io/devcontainers/features/node:1.5.0": {
       "version": "22.14.0"
     },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false,
       "dockerDashComposeVersion": "v2"
@@ -34,6 +35,7 @@
         "GitHub.copilot",
         "GitHub.copilot-chat",
         "PKief.material-icon-theme",
+        "Prisma.prisma",
         "antfu.file-nesting",
         "bierner.github-markdown-preview",
         "bierner.markdown-mermaid",
@@ -62,7 +64,7 @@
         "files.watcherExclude": {
           "**/node_modules/**": true
         },
-        "scm.defaultViewMode": "tree",
+        "scm.defaultViewMode": "tree"
       }
     }
   }

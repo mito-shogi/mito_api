@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@hono-rate-limiter/cloudflare": "^0.2.2",
+    "@prisma/adapter-d1": "^6.5.0",
+    "@prisma/client": "^6.5.0",
     "css-select": "^5.1.0",
     "dayjs": "^1.11.13",
     "hono": "^4.7.5",

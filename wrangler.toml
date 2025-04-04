@@ -9,7 +9,7 @@ logpush = true
 kv_namespaces = []
 
 d1_databases = [
-  { binding = "DB", database_name = "mito-shogi", database_id = "3aa4f6e7-4514-4bf0-98bd-df87e7cd2be5" },
+  { binding = "DB", database_name = "mito-shogi", database_id = "ee3fbbc0-06ef-4ed4-baa7-658d0f664aee" },
 ]
 
 # [[unsafe.bindings]]
@@ -20,7 +20,7 @@ d1_databases = [
 
 # Cron Events
 [triggers]
-crons = []
+crons = ["*/5 * * * *"]
 
 [env.dev]
 

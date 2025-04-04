@@ -10,6 +10,9 @@ export const scheduled = async (event: ScheduledController, env: Bindings, ctx: 
   switch (event.cron) {
     case '0 0 * * *':
       break
+    case '*/5 * * * *':
+      ctx.waitUntil(fetch_games(env))
+      break
     default:
       ctx.waitUntil(fetch_games(env))
       break

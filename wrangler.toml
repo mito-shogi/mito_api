@@ -11,7 +11,7 @@ kv_namespaces = [
 ]
 
 d1_databases = [
-  { binding = "DB", database_name = "mito-shogi", database_id = "f591c2f3-e3bc-4770-8ac3-d883316e1f29" },
+  { binding = "DB", database_name = "mito-shogi", database_id = "3aa4f6e7-4514-4bf0-98bd-df87e7cd2be5" },
 ]
 
 # Cron Events

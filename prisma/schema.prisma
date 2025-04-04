@@ -44,23 +44,51 @@ model User {
   whiteGames Game[]   @relation("WhiteGames")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Tag {
+  tagId    Int        @id @map("tag_id")
+  games    Game[]     @relation("GameTags")
+  gameTags GameTags[]
+
+  @@map("tags")
 }
 
 model Game {
-  gameId    String   @id @map("game_id")
+  gameId    String     @id @map("game_id")
   mode      GameMode
   rule      GameRule
   type      GameType
-  black     User     @relation("BlackGames", fields: [blackId], references: [userId], onDelete: Cascade)
-  white     User     @relation("WhiteGames", fields: [whiteId], references: [userId], onDelete: Cascade)
+  black     User       @relation("BlackGames", fields: [blackId], references: [userId], onDelete: Cascade)
+  white     User       @relation("WhiteGames", fields: [whiteId], references: [userId], onDelete: Cascade)
   handicap  Int?
   kif       String?
-  playTime  DateTime @map("play_time")
+  playTime  DateTime   @map("play_time")
   position  String?
   result    String
   reason    String?
-  blackId   String   @map("black_id")
-  whiteId   String   @map("white_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  blackId   String     @map("black_id")
+  whiteId   String     @map("white_id")
+  tags      Tag[]      @relation("GameTags")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  gameTags  GameTags[]
+
+  @@index([mode])
+  @@index([rule])
+  @@index([type])
+  @@index([handicap])
+  @@map("games")
+}
+
+model GameTags {
+  gameId String @map("game_id")
+  tagId  Int
+  game   Game   @relation(fields: [gameId], references: [gameId])
+  tag    Tag    @relation(fields: [tagId], references: [tagId])
+
+  @@id([gameId, tagId]) // ゲームとタグの組み合わせを一意に
+  @@map("game_tags")
 }

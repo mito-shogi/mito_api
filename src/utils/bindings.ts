@@ -10,4 +10,5 @@ export type Bindings = {
   USERS: KVNamespace
   GAMES: KVNamespace
   CSA: KVNamespace
+  DB: D1Database
 }

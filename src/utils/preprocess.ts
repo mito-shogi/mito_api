@@ -19,14 +19,14 @@ export const PreUserSchema = (input: any): any => {
   }
   return selectAll('li span', parseDocument(match[1])).map((element) => {
     // @ts-ignore
-    const name: string = element.children[0].data
+    const user_id: string = element.children[0].data
     // @ts-ignore
     const rank: string = element.next?.data.trim()
     // @ts-ignore
     const avatar: string = element.prev?.prev.attribs.src.match(/\/avatar\/(.+?)-l.png/)[1]
 
     return {
-      name: name,
+      user_id: user_id,
       rank: rank.includes('Kyu')
         ? (Number.parseInt(rank.replace('Kyu', '').trim(), 10) - 1) * -1
         : Number.parseInt(rank.replace('Dan', '').trim()),

@@ -1,4 +1,3 @@
-import { WorkersKVStore } from '@hono-rate-limiter/cloudflare'
 import { OpenAPIHono as Hono } from '@hono/zod-openapi'
 import { apiReference } from '@scalar/hono-api-reference'
 import dayjs from 'dayjs'
@@ -6,7 +5,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import type { Context, Next } from 'hono'
-import { rateLimiter } from 'hono-rate-limiter'
 import { cache } from 'hono/cache'
 import { compress } from 'hono/compress'
 import { cors } from 'hono/cors'
@@ -65,18 +63,12 @@ if (!process.env.DEV) {
   app.get('/docs', apiReference(reference))
   app.notFound((c) => c.redirect('/docs'))
 }
-if (process.env.DEV) {
-  app.use((c: Context, next: Next) =>
-    rateLimiter<{ Bindings: Bindings }>({
-      windowMs: 5 * 60 * 1000,
-      limit: 100,
-      standardHeaders: 'draft-7',
-      keyGenerator: (c) =>
-        c.req.header('x-forwarded-for') || c.req.header('cf-connecting-ip') || c.req.header('x-real-ip') || 'unknown',
-      store: new WorkersKVStore({ namespace: c.env.CACHE })
-    })(c, next)
-  )
-}
+// app.use(
+//   cloudflareRateLimiter<{ Bindings: Bindings; Variables: Variables }>({
+//     rateLimitBinding: (c) => c.env.RATE_LIMITER,
+//     keyGenerator: (c) => c.req.header('cf-connecting-ip') || c.req.header('x-real-ip') || 'unknown'
+//   })
+// )
 app.onError(async (error, c) => {
   if (error instanceof HTTPException) {
     return c.json({ message: error.message }, error.status)

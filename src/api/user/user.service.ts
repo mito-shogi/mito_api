@@ -27,11 +27,14 @@ export const getUser = async (c: Context, user_id: string): Promise<UserSchema> 
 }
 
 export const getUserGames = async (c: Context, user_id: string): Promise<Paginated<typeof GameSchema>> => {
-  const games = await request(
-    c,
-    new GameListQuery(user_id, 0, 0, 1),
-    z.preprocess(PreGameListSchema, z.array(GameSchema))
-  )
+  const games = (
+    await Promise.all([
+      request(c, new GameListQuery(user_id, 0, 0, 0), z.preprocess(PreGameListSchema, z.array(GameSchema))),
+      request(c, new GameListQuery(user_id, 0, 0, 1), z.preprocess(PreGameListSchema, z.array(GameSchema))),
+      request(c, new GameListQuery(user_id, 0, 0, 2), z.preprocess(PreGameListSchema, z.array(GameSchema))),
+      request(c, new GameListQuery(user_id, 1, 0, 1), z.preprocess(PreGameListSchema, z.array(GameSchema)))
+    ])
+  ).flat()
   const users: UserSchema[] = games.flatMap((game) => [game.black, game.white])
   await Promise.all([c.env.prisma.create_users(users), c.env.prisma.create_games(games)])
   return {

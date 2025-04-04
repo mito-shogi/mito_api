@@ -2,11 +2,65 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+enum GameMode {
+  NORMAL
+  SPRINT
+}
+
+enum GameRule {
+  MIN10
+  MIN3
+  SEC10
+}
+
+enum GameType {
+  RANKED
+  FRIENDS
+  COACH
+  EVENT
+  LEARNING
+}
+
+enum Reason {
+  TIMEOUT
+  CHECKMATE
+  TORYO
+}
+
+model User {
+  userId     String   @id @map("user_id")
+  rank       Int
+  avatar     String
+  blackGames Game[]   @relation("BlackGames")
+  whiteGames Game[]   @relation("WhiteGames")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+}
+
+model Game {
+  gameId    String   @id @map("game_id")
+  mode      GameMode
+  rule      GameRule
+  type      GameType
+  black     User     @relation("BlackGames", fields: [blackId], references: [userId], onDelete: Cascade)
+  white     User     @relation("WhiteGames", fields: [whiteId], references: [userId], onDelete: Cascade)
+  handicap  Int?
+  kif       String?
+  playTime  DateTime @map("play_time")
+  position  String?
+  result    String
+  reason    String?
+  blackId   String   @map("black_id")
+  whiteId   String   @map("white_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 }

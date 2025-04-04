@@ -66,6 +66,8 @@ jobs:
           bun-version: latest
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
+      - name: Prisma Generate
+        run: bunx prisma generate
       - name: Build
         run: |
           bun wrangler build

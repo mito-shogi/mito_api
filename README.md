@@ -42,10 +42,38 @@ d1_databases = [
 bunx wrangler d1 migrations create mito-shogi create_user_table
 ```
 
-#### Migrate
+#### Migrate and Apply
 
 ```zsh
+# First time
 bunx prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_user_table.sql
+
+# Otherwise
+bunx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_user_table.sql
+```
+
+```zsh
+vscode ➜ ~/app (master) $ bunx wrangler d1 migrations apply mito-shogi --local
+
+ ⛅️ wrangler 4.7.0
+------------------
+
+Migrations to be applied:
+┌────────────────────────────┐
+│ name                       │
+├────────────────────────────┤
+│ 0001_create_user_table.sql │
+└────────────────────────────┘
+✔ About to apply 1 migration(s)
+Your database may not be available to serve requests during the migration, continue? … yes
+🌀 Executing on local database mito-shogi (f591c2f3-e3bc-4770-8ac3-d883316e1f29) from .wrangler/state/v3/d1:
+🌀 To execute on your remote database, add a --remote flag to your wrangler command.
+🚣 3 commands executed successfully.
+┌────────────────────────────┬────────┐
+│ name                       │ status │
+├────────────────────────────┼────────┤
+│ 0001_create_user_table.sql │ ✅     │
+└────────────────────────────┴────────┘
 ```
 
 #### Bindings

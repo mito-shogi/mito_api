@@ -34,7 +34,7 @@ export class GameListQuery implements RequestType {
   constructor(
     user_id: string,
     mode: 0 | 1,
-    rule: 0 | 1 | 2 | 3,
+    rule: 0 | 1 | 2 | 3 | 4,
     type: 0 | 1 | 2
     // month: string,
     // is_latest: boolean
@@ -56,11 +56,11 @@ export class GameListQuery implements RequestType {
       2: 's1'
     }
     this.parameters = {
-      opponent_type: game_modes[mode],
-      init_pos_type: game_rules[rule],
+      opponent_type: game_rules[rule].toLowerCase(),
+      init_pos_type: game_modes[mode].toLowerCase(),
       // month: month,
       // is_latest: is_latest,
-      gtype: game_types[type],
+      gtype: game_types[type].toLowerCase(),
       locale: 'en',
       user_id: user_id,
       version: 'webapp_10.0.0_standard'

@@ -22,13 +22,13 @@ export const GameSchema = z
       description: 'ゲーム種別',
       example: '180+0+0'
     }),
-    game_type: z.enum(['rank', 'friends', 'coach', 'event', 'learning']).openapi({
+    game_type: z.enum(['RANKED', 'FRIEND', 'COACH', 'EVENT', 'LEARNING']).openapi({
       description: 'ルール',
-      example: 'rank'
+      example: 'RANKED'
     }),
-    game_mode: z.enum(['normal', 'sprint']).openapi({
+    game_mode: z.enum(['NORMAL', 'SPRINT']).openapi({
       description: '対局モード',
-      example: 'normal'
+      example: 'NORMAL'
     }),
     black: UserSchema,
     white: UserSchema,

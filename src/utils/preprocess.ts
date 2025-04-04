@@ -51,24 +51,24 @@ export const PreGameSchema = (input: any): any => {
   const game_type: string = (() => {
     switch (input.opponent_type) {
       case 0:
-        return 'rank'
+        return 'RANKED'
       case 1:
-        return 'friend'
+        return 'FRIEND'
       case 2:
-        return 'coach'
+        return 'COACH'
       case 3:
-        return 'event'
+        return 'EVENT'
       case 4:
-        return 'learning'
+        return 'LEARNING'
       default:
         throw new HTTPException(400, { message: 'Invalid Game Type' })
     }
   })()
   const game_mode: string = (() => {
     if (input.init_sfen_position === 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1') {
-      return 'normal'
+      return 'NORMAL'
     }
-    return 'sprint'
+    return 'SPRINT'
   })()
   const game_rule: string = (() => {
     switch (input.game_type) {
@@ -123,7 +123,7 @@ export const PreGameSchema = (input: any): any => {
   const record: Record = new Record(position)
   const black = input.user_info[0]
   const white = input.user_info[1]
-  if (game_type !== 'coach') {
+  if (game_type !== 'COACH') {
     record.metadata.setStandardMetadata(RecordMetadataKey.BLACK_NAME, black.name)
     record.metadata.setStandardMetadata(RecordMetadataKey.BLACK_SHORT_NAME, black.name)
     record.metadata.setStandardMetadata(RecordMetadataKey.WHITE_NAME, white.name)
@@ -185,10 +185,8 @@ export const PreGameListSchema = (input: any): any => {
     ).attribs.src.includes('playing')
     const game_mode: string = selectOne('div.game_category .init_pos_type_text', content)
       .children[0].data.trim()
-      .toLocaleLowerCase()
-    const time: string = selectOne('div.game_category .time_mode_text', content)
-      .children[0].data.trim()
-      .toLocaleLowerCase()
+      .toUpperCase()
+    const time: string = selectOne('div.game_category .time_mode_text', content).children[0].data.trim().toLowerCase()
     const game_rule: string = (() => {
       switch (time) {
         case '10 min':
@@ -237,7 +235,7 @@ export const PreGameListSchema = (input: any): any => {
       play_time: play_time,
       black: black,
       white: white,
-      game_type: 'rank',
+      game_type: 'RANKED',
       game_mode: game_mode,
       game_rule: game_rule,
       result: is_playing ? undefined : is_draw ? 'DRAW' : is_win ? 'WIN' : 'LOSE',

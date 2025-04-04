@@ -29,11 +29,11 @@ export const getUser = async (c: Context, user_id: string): Promise<UserSchema> 
 export const getUserGames = async (c: Context, user_id: string): Promise<Paginated<typeof GameSchema>> => {
   const games = await request(
     c,
-    new GameListQuery(user_id, 'normal', 'rank', 'sb'),
+    new GameListQuery(user_id, 0, 0, 1),
     z.preprocess(PreGameListSchema, z.array(GameSchema))
   )
   const users: UserSchema[] = games.flatMap((game) => [game.black, game.white])
-  await c.env.prisma.create_users(users)
+  await Promise.all([c.env.prisma.create_users(users), c.env.prisma.create_games(games)])
   return {
     count: games.length,
     results: games

@@ -52,30 +52,58 @@ class Prisma {
     })
   }
 
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   create_games = async (games: GameSchema[]): Promise<void> => {
-    // await Promise.all(games.map((game) => this.upsert_game(game)))
+    await Promise.all(games.map((game) => this.upsert_game(game)))
   }
 
-  // private upsert_game = async (game: GameSchema): Promise<void> => {
-  //   await this.prisma.game.upsert({
-  //     where: {
-  //       gameId: game.game_id
-  //     },
-  //     update: {
-  //       kif: game.kif,
-  //       tags: game.tags,
-  //       position: game.position,
-  //       playTime: game.play_time,
-  //       gameRule: game.game_rule,
-  //       gameMode: game.game_mode,
-  //       gameType: game.game_type
-  //     },
-  //     create: {
-  //       ...game
-  //     }
-  //   })
-  // }
+  private upsert_game = async (game: GameSchema): Promise<void> => {
+    await this.prisma.game.upsert({
+      where: {
+        gameId: game.game_id
+      },
+      update: {
+        kif: game.kif,
+        position: game.position,
+        playTime: game.play_time
+      },
+      create: {
+        gameId: game.game_id,
+        // @ts-ignore
+        mode: game.game_mode,
+        // @ts-ignore
+        rule: 'MIN3',
+        // @ts-ignore
+        type: game.game_type,
+        black: {
+          connectOrCreate: {
+            where: {
+              userId: game.black.user_id
+            },
+            create: {
+              userId: game.black.user_id,
+              rank: game.black.rank,
+              avatar: game.black.avatar
+            }
+          }
+        },
+        white: {
+          connectOrCreate: {
+            where: {
+              userId: game.black.user_id
+            },
+            create: {
+              userId: game.black.user_id,
+              rank: game.black.rank,
+              avatar: game.black.avatar
+            }
+          }
+        },
+        playTime: game.play_time,
+        // @ts-ignore
+        result: game.result
+      }
+    })
+  }
 }
 
 export default Prisma

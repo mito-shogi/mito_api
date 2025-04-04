@@ -141,7 +141,7 @@ export const PreGameSchema = (input: any): any => {
     record.current.setElapsedMs(move.time * 1000)
   }
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const user_info: { name: string; rank: number; avatar: string }[] = input.user_info.map((user: any) => ({
+  const user_info: { user_id: string; rank: number; avatar: string }[] = input.user_info.map((user: any) => ({
     ...user,
     rank: user.dan
   }))
@@ -203,20 +203,20 @@ export const PreGameListSchema = (input: any): any => {
     })()
     const black = (() => {
       const avatar = selectOne('.left_player_avatar', content).attribs.src.match(/\/avatar\/(.+?)-l.png/)[1]
-      const name = selectOne('.player_name_text_left', content).children[0].data.trim()
+      const user_id = selectOne('.player_name_text_left', content).children[0].data.trim()
       const rank = selectOne('.player_dan_text_left', content).children[0].data.trim()
       return {
-        name: name,
+        user_id: user_id,
         rank: Number.parseInt(rank.match(/(\d+) (Dan|Kyu)/)[1], 10) * (rank.includes('Dan') ? 1 : -1),
         avatar: avatar
       }
     })()
     const white = (() => {
       const avatar = selectOne('.right_player_avatar', content).attribs.src.match(/\/avatar\/(.+?)-r.png/)[1]
-      const name = selectOne('.player_name_text_right', content).children[0].data.trim()
+      const user_id = selectOne('.player_name_text_right', content).children[0].data.trim()
       const rank = selectOne('.player_dan_text_right', content).children[0].data.trim()
       return {
-        name: name,
+        user_id: user_id,
         rank: Number.parseInt(rank.match(/(\d+) (Dan|Kyu)/)[1], 10) * (rank.includes('Dan') ? 1 : -1),
         avatar: avatar
       }

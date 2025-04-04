@@ -14,7 +14,6 @@
     "dev": "wrangler dev src/index.ts --test-scheduled",
     "start": "bun dist/index.js",
     "prebuild": "rimraf dist",
-    "build": "bun build src/index.ts --minify --outdir dist --outfile=index.js",
     "prepare": "husky",
     "deploy": "wrangler deploy"
   },

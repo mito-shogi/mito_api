@@ -4,7 +4,7 @@ import { UserParams, UserSchema, UserSearchQuery } from './user.schema.dto'
 import type { Bindings } from '@/utils/bindings'
 import { OpenAPIHono as Hono } from '@hono/zod-openapi'
 import { Paginated } from '../common/paginated.dto'
-import { GameInfoSchema } from '../game/game.schema.dto'
+import { GameSchema } from '../game/game.schema.dto'
 import { findUsers, getUser, getUserGames } from './user.service'
 const user = new Hono<{ Bindings: Bindings }>()
 
@@ -80,7 +80,7 @@ user.openapi(
       200: {
         content: {
           'application/json': {
-            schema: Paginated(GameInfoSchema)
+            schema: Paginated(GameSchema)
           }
         },
         description: '棋譜一覧'

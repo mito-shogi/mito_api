@@ -20,7 +20,7 @@ export const UserParams = z.object({
 
 export const UserSchema = z
   .object({
-    name: z.string().openapi({
+    user_id: z.string().openapi({
       description: 'ユーザ名',
       example: 'mito_shogi'
     }),

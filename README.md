@@ -111,3 +111,33 @@ app.use('*', async (c: Context, next: Next) => {
   await next()
 })
 ```
+
+#### Generate
+
+```zsh
+vscode ➜ ~/app (master) $ bunx prisma generate
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.5.0) to ./node_modules/@prisma/client in 46ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Help us improve the Prisma ORM for everyone. Share your feedback in a short 2-min survey: https://pris.ly/orm/survey/release-5-22
+```
+
+## Environment Variables
+
+```zsh
+# .dev.vars
+WARS_AUTHENTICITY_TOKEN=
+WARS_SECRET=
+WARS_USER_ID=
+WARS_WEB_SESSION=
+```
+
+```zsh
+# .env
+DATABASE_URL="file:./dev.db"
+CLOUDFLARE_API_TOKEN=
+```

@@ -13,6 +13,10 @@ kv_namespaces = [
   { binding = "CSA", id = "502c0da019c04a7fa9d9eb4ac8a5ef1c", preview_id = "608fde71c54a4cc9b5b83da00eea6cf8" },
 ]
 
+d1_databases = [
+  { binding = "DB", database_name = "mito-shogi", database_id = "f591c2f3-e3bc-4770-8ac3-d883316e1f29" },
+]
+
 # Cron Events
 [triggers]
 crons = []

@@ -85,7 +85,7 @@ model Game {
 
 model GameTags {
   gameId String @map("game_id")
-  tagId  Int
+  tagId  Int    @map("tag_id")
   game   Game   @relation(fields: [gameId], references: [gameId])
   tag    Tag    @relation(fields: [tagId], references: [tagId])
 

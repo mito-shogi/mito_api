@@ -4,6 +4,9 @@ import type { Bindings } from '@/utils/bindings'
 import type { HTTPHeaders, RequestType } from '@/utils/request_type'
 import type { Context } from 'hono'
 
+/**
+ * @description
+ */
 export class GameListQuery implements RequestType {
   method = HTTPMethod.GET
   path = 'games/history'
@@ -11,20 +14,53 @@ export class GameListQuery implements RequestType {
   parameters?: Record<string, string | number | boolean> | undefined
   encoding?: HTTPEncoding | undefined = HTTPEncoding.QUERY
 
+  /**
+   *
+   * @param user_id
+   * @param mode
+   * 0: NORMAL
+   * 1: SPRINT
+   * @param rule
+   * 0: RANKED
+   * 1: FRIENDS
+   * 2: COACH
+   * 3: EVENT
+   * 4: LEARNING
+   * @param time
+   * 0: 600+0+0 (十分)
+   * 1: 180+0+0 (三分)
+   * 2: 0+10+0  (十秒)
+   */
   constructor(
     user_id: string,
-    mode: 'normal' | 'sprint',
-    rule: 'rank',
-    time: '' | 'sb' | 's1'
+    mode: 0 | 1,
+    rule: 0 | 1 | 2 | 3 | 4,
+    type: 0 | 1 | 2
     // month: string,
     // is_latest: boolean
   ) {
+    const game_rules: Record<number, string> = {
+      0: 'NORMAL',
+      1: 'FRIENDS',
+      2: 'EVENT',
+      3: 'COACH',
+      4: 'LEARNING'
+    }
+    const game_modes: Record<number, string> = {
+      0: 'NORMAL',
+      1: 'SPRINT'
+    }
+    const game_types: Record<number, string> = {
+      0: '',
+      1: 'sb',
+      2: 's1'
+    }
     this.parameters = {
-      opponent_type: mode,
-      init_pos_type: rule,
+      opponent_type: game_rules[rule].toLowerCase(),
+      init_pos_type: game_modes[mode].toLowerCase(),
       // month: month,
       // is_latest: is_latest,
-      gtype: time,
+      gtype: game_types[type].toLowerCase(),
       locale: 'en',
       user_id: user_id,
       version: 'webapp_10.0.0_standard'

@@ -51,7 +51,7 @@ app.use('*', (c, next) => {
   }
   return next()
 })
-app.use('*', async (c: Context, next: Next) => {
+app.use('*', async (c: Context<{ Bindings: Bindings }>, next: Next) => {
   c.env = { ...process.env, ...c.env }
   if (!c.env.prisma) {
     c.env.prisma = new Prisma(c.env)
